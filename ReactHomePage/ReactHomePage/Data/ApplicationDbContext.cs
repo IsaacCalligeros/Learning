@@ -17,5 +17,9 @@ namespace ReactHomePage.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+
+        public DbSet<Weather> Weather { get; set; }
+        public DbSet<Stock> Stocks { get; set; }
+        public DbSet<News> News { get; set; }
     }
 }

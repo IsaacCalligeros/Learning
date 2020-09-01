@@ -53,7 +53,7 @@ export class FetchData extends Component {
   }
 
   async populateWeatherData() {
-    var res = await axiosInstance.get("/weatherforecast").then(res => {
+    await axiosInstance.get("/weatherforecast").then(res => {
       this.setState({ forecasts: res.data, loading: false });
     });
   }

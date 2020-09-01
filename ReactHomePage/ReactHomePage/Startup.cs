@@ -11,6 +11,12 @@ using ReactHomePage.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using ReactHomePage.Repositories.Interfaces;
+using System.Linq;
+using ReactHomePage.Repositories;
+using AutoMapper;
+using ReactHomePage.Helpers;
 
 namespace ReactHomePage
 {
@@ -26,9 +32,24 @@ namespace ReactHomePage
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            void AddTransient(Type t)
+            {
+                var tInter = t.GetInterfaces().FirstOrDefault();
+                if (tInter != null) services.AddTransient(tInter, t);
+            }
+
+            void AddScoped(Type t)
+            {
+                var tInter = t.GetInterfaces().FirstOrDefault();
+                if (tInter != null) services.AddScoped(tInter, t);
+            }
+
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+
+            services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options => 
+            options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -41,6 +62,8 @@ namespace ReactHomePage
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddHttpContextAccessor();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
