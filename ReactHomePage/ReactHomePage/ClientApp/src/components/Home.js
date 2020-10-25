@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { MovableContainer } from "./MovableContainer";
 
 export class Home extends Component {
@@ -7,18 +7,26 @@ export class Home extends Component {
   constructor() {
     super();
     this.state = {
-      width: 200,
-      height: 200,
-      x: 10,
-      y: 10
+      container1: {
+        width: 200,
+        height: 200,
+        x: 10,
+        y: 10,
+      },
+      container2: {
+        width: 200,
+        height: 200,
+        x: 310,
+        y: 10,
+      },
     };
   }
 
-  render () {
+  render() {
     return (
       <div className="component-container">
-        <MovableContainer></MovableContainer>
-        <MovableContainer></MovableContainer>
+        <MovableContainer location={this.state.container1}></MovableContainer>
+        <MovableContainer location={this.state.container2}></MovableContainer>
       </div>
     );
   }

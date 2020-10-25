@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
 import { Rnd } from "react-rnd";
+import PropTypes from "prop-types";
+import Weather from "./Weather"
 
 const style = {
   display: "flex",
@@ -10,20 +12,20 @@ const style = {
   background: "#f0f0f0",
 };
 
+
 export class MovableContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      width: 200,
-      height: 200,
-      x: 10,
-      y: 10,
+      x: props.location.x,
+      y: props.location.y,
+      width: props.location.width,
+      height: props.location.height
     };
   }
 
   render() {
     return (
-      <>
         <Rnd
           style={style}
           bounds="parent"
@@ -40,9 +42,13 @@ export class MovableContainer extends Component {
             });
           }}
         >
-          Rnd
+          <Weather></Weather>
         </Rnd>
-      </>
+
     );
   }
+}
+
+MovableContainer.propTypes= {
+  location: PropTypes.object.isRequired
 }

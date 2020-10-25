@@ -6,8 +6,6 @@ const instance = axios.create({
   baseURL: publicUrl.origin,
 });
 
-console.log(publicUrl);
-
 instance.interceptors.request.use(
   async (config) => {
     const token = await authService.getAccessToken();
