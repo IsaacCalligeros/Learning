@@ -7,6 +7,7 @@ export default interface ContainersModel {
   currentContainers: Computed<ContainersModel, container[]>;
   setContainers: Action<ContainersModel, container[]>;
   addContainer: Action<ContainersModel, container>;
+  updateContainer: Action<ContainersModel, container>;
   createContainer: Thunk<ContainersModel, container>;
   getContainers: Thunk<ContainersModel>;
 }

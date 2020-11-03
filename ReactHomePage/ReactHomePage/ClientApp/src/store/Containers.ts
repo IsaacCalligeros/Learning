@@ -2,15 +2,22 @@
 import { action, thunk, computed } from 'easy-peasy';
 
 import ContainersModel from './ContainersModel';
+import container from '../components/containers/types';
 
 const Containers: ContainersModel = {
   containers: [],
   currentContainers: computed((state) => state.containers),
-  setContainers: action((state, container) => {
-    state.containers = container;
+  setContainers: action((state, containers) => {
+    state.containers = containers;
   }),
   addContainer: action((state, container) => {
     state.containers.push(container);
+  }),
+  updateContainer: action((state, aContainer) => {
+    const elementsIndex = state.containers.findIndex(element => element.id == aContainer.id);
+    let newArray = [...state.containers];
+    newArray[elementsIndex] = aContainer;
+    state.containers = newArray
   }),
   //Tempo code from an example Coding garden tute, to be transfered when serverside set up
   createContainer: thunk(async (state, entry) => {
