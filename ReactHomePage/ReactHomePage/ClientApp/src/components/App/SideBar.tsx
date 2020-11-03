@@ -1,17 +1,22 @@
 import React from "react";
 import Sidebar from "react-sidebar";
 
-const SideBar = ({ open, setOpen }) => {
+interface SideBarProps {
+  open: boolean;
+  openSideBar: () => void
+}
+
+const SideBar = ( props: SideBarProps ) => {
   return (
     <Sidebar
       sidebar={
         <>
           <b>Sidebar content</b>
-          <div>{open}</div>
+          <div>{props.open}</div>
         </>
       }
-      open={open}
-      onSetOpen={() => setOpen()}
+      open={props.open}
+      onSetOpen={() => props.openSideBar()}
       styles={{ sidebar: { background: "white" } }}
     >
       <></>

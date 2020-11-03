@@ -2,7 +2,7 @@ import React from "react";
 import { Container } from "reactstrap";
 import { NavMenu } from "./NavMenu";
 
-const Layout = ({ children }) =>{
+const Layout = ( children: any ) =>{
     return (
       <div>
         <NavMenu />

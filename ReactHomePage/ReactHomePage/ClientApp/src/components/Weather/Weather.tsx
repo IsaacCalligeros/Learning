@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axiosInstance from "../axiosInstance";
+import axiosInstance from "../../axiosInstance";
+import WeatherTypes from "./types";
 
 const Weather = () => {
   const [loading, setLoading] = useState(true);
-  const [forecasts, setForecasts] = useState([]);
+  const [forecasts, setForecasts] = useState<WeatherTypes.forecast[]>([]);
 
   useEffect(() => {
       axiosInstance.get("/weatherforecast").then((res) => {
@@ -25,8 +26,8 @@ const Weather = () => {
               </tr>
             </thead>
             <tbody>
-              {forecasts.map((forecast) => (
-                <tr key={forecast.date}>
+              {forecasts.map((forecast, idx) => (
+                <tr key={idx}>
                   <td>{forecast.date}</td>
                   <td>{forecast.temperatureC}</td>
                   <td>{forecast.temperatureF}</td>

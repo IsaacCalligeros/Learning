@@ -9,7 +9,7 @@ import {
   NavLink,
 } from "reactstrap";
 import { Link } from "react-router-dom";
-import { LoginMenu } from "./api-authorization/LoginMenu";
+import { LoginMenu } from "../api-authorization/LoginMenu";
 import "./NavMenu.css";
 import SideBar from "./SideBar";
 import { Button } from "reactstrap";
@@ -18,14 +18,19 @@ import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 
 const NavMenu = () => {
     const [collapsed, setCollapsed] = useState(true);
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
+
+    const setOpenProp = () => {
+      setOpen(!open);
+    }
 
     return (
       <header>
         <SideBar
           open={open}
-          setOpen={() => setOpen(!open)}
+          openSideBar={setOpenProp}
         ></SideBar>
+        
         <Navbar
           className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3"
           light
