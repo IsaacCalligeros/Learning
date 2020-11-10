@@ -10,7 +10,7 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { LoginMenu } from "../api-authorization/LoginMenu";
-import "./NavMenu.css";
+import "../../CSS/NavMenu.scss";
 import SideBar from "./SideBar";
 import { Button } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

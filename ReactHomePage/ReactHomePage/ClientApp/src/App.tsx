@@ -8,7 +8,7 @@ import { ApplicationPaths } from './components/api-authorization/ApiAuthorizatio
 
 import Container from '@material-ui/core/Container';
 
-import './custom.css'
+import '../src/CSS/custom.scss';
 import { Link, Switch, Redirect } from 'react-router-dom';
 import { NavMenu } from './components/App/NavMenu';
 
@@ -16,7 +16,7 @@ const App: React.FC = () => {
   return (
     <div>
       <NavMenu></NavMenu>
-      <Container maxWidth="md">
+      <Container maxWidth="xl" className="component-container">
         <Switch>
           <AuthorizeRoute exact path="/" component={Home} />
           <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />

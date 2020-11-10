@@ -14,7 +14,7 @@ const Containers: ContainersModel = {
     state.containers.push(container);
   }),
   updateContainer: action((state, aContainer) => {
-    const elementsIndex = state.containers.findIndex(element => element.id == aContainer.id);
+    const elementsIndex = state.containers.findIndex(element => element.i == aContainer.i);
     let newArray = [...state.containers];
     newArray[elementsIndex] = aContainer;
     state.containers = newArray

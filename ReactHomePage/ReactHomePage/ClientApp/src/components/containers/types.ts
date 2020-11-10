@@ -1,9 +1,9 @@
-interface container {
-  id: string;
-  width: number;
-  height: number;
-  x: number;
-  y: number;
+import { Layout } from "react-grid-layout";
+
+namespace ContainerTypes {
+  export interface Layouts {
+      lg: Layout[];
+  }
 }
 
-export default container;
+export default ContainerTypes;
