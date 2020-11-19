@@ -44,6 +44,22 @@ namespace ReactHomePage
                 if (tInter != null) services.AddScoped(tInter, t);
             }
 
+            services.AddHttpClient(HttpClientHelper.Weather, client => {
+                client.BaseAddress = new Uri("https://api.openweathermap.org/");
+            });
+
+            services.AddHttpClient(HttpClientHelper.Stocks, client => {
+                client.BaseAddress = new Uri("https://finnhub.io/api/v1/");
+                client.DefaultRequestHeaders.Add("X-Finnhub-Token", Configuration["finnHubKey"]);
+            });
+
+            services.AddHttpClient(HttpClientHelper.News, client => {
+                client.BaseAddress = new Uri("https://newsapi.org/v2/everything?q=");
+                client.DefaultRequestHeaders.Add("apiKey", Configuration["newsApiKey"]);
+            });
+
+            services.AddSwaggerDocument(configure => configure.Title = "Home page API");
+
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
             services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options => 
@@ -86,6 +102,9 @@ namespace ReactHomePage
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

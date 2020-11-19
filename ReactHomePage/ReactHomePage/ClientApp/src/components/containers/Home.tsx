@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { MovableContainer } from "./MovableContainer";
 import container from "./types";
 import { useStoreActions, useStoreState } from "../../hooks";
 import { times, random } from "lodash";
@@ -10,6 +9,7 @@ import _ from "lodash";
 import Weather from "../Weather/Weather";
 import DragFromOutsideLayout from "./grids";
 import ContainerTypes from "./types";
+import { v4 as uuidv4 } from 'uuid';
 
 const Home = () => {
   const addContainer = useStoreActions(
@@ -22,26 +22,25 @@ const Home = () => {
     (state) => state.containers.updateContainer
   );
 
-  const randomId = () => times(20, () => random(35).toString(36)).join("");
   const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
   useEffect(() => {
     const container1: Layout = {
-      i: randomId(),
+      i: uuidv4(),
       w: 3,
       h: 1,
       x: 2,
       y: 0,
     };
     const container2: Layout = {
-      i: randomId(),
+      i: uuidv4(),
       w: 2,
       h: 3,
       x: 6,
       y: 1,
     };
     const container3: Layout = {
-      i: randomId(),
+      i: uuidv4(),
       w: 2,
       h: 3,
       x: 6,

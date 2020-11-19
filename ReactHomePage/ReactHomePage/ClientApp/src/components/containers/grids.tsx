@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import _ from "lodash";
-import { Responsive, WidthProvider } from "react-grid-layout";
+import { Responsive, WidthProvider, Layout } from "react-grid-layout";
 import "../../CSS/grid-layout.scss";
 import Weather from "../Weather/Weather";
 import ContainerTypes from "./types"
+import { useStoreActions, useStoreState } from "../../hooks";
+import { v4 as uuidv4 } from 'uuid';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -18,6 +20,11 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
     onLayoutChange: function () {},
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
   };
+
+  const addContainer = useStoreActions(
+    (state) => state.containers.addContainer
+  );
+  
   const [currentBreakpoint, setCurrentBreakpoint] = useState("lg");
   const [compactType, setCompactType] = useState<string | null>("vertical");
   const [mounted, setMounted] = useState(false);
@@ -30,34 +37,18 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
     setCurrentBreakpoint(currentBreakpoint);
   };
 
-  const onCompactTypeChange = () => {
-    const oldCompactType = compactType;
-    const newCompactType =
-      oldCompactType === "horizontal"
-        ? "vertical"
-        : oldCompactType === "vertical"
-        ? null
-        : "horizontal";
-    setCompactType(newCompactType);
-  };
-
   const onLayoutChange = (layout: any, layouts: any) => {
     console.dir(layout, layouts);
     // this.props.onLayoutChange(layout, layouts);
   };
 
-  const onDrop = (layout: any, layoutItem: any, event: any) => {
-    alert(
-      `Dropped element props:\n${JSON.stringify(
-        layoutItem,
-        ["x", "y", "w", "h"],
-        2
-      )}`
-    );
+  const onDrop = (layout: any, layoutItem: Layout, event: any) => {
+    layoutItem.i = uuidv4();
+    addContainer(layoutItem);
   };
 
   const onRemoveItem = (i: any) => {
-    // setLayouts({ lg: _.reject(props.layouts.lg, { i: i }) });
+    //  setLayouts({ lg: _.reject(props.layouts.lg, { i: i }) });
   };
 
   const generateDOM = () => {
@@ -75,24 +66,6 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
 
   return (
     <div>
-      <div>
-        Current Breakpoint: {currentBreakpoint} (
-        {/* {this.props.cols[this.state.currentBreakpoint]} columns) */}
-      </div>
-      <div>Compaction type: {compactType || "No Compaction"}</div>
-      <button onClick={onCompactTypeChange}>Change Compaction Type</button>
-      <div
-        className="droppable-element"
-        draggable={true}
-        unselectable="on"
-        // this is a hack for firefox
-        // Firefox requires some kind of initialization
-        // which we can do by adding this attribute
-        // @see https://bugzilla.mozilla.org/show_bug.cgi?id=568313
-        onDragStart={(e) => e.dataTransfer.setData("text/plain", "")}
-      >
-        Droppable Element (Drag me!)
-      </div>
       <ResponsiveReactGridLayout
         {...defaultProps}
         onBreakpointChange={() => onBreakpointChange}

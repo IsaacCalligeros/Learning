@@ -11,7 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import { LoginMenu } from "../api-authorization/LoginMenu";
 import "../../CSS/NavMenu.scss";
-import SideBar from "./SideBar";
+import { SideBar } from "./SideBar";
 import { Button } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoffee } from "@fortawesome/free-solid-svg-icons";
@@ -25,12 +25,7 @@ const NavMenu = () => {
     }
 
     return (
-      <header>
-        <SideBar
-          open={open}
-          openSideBar={setOpenProp}
-        ></SideBar>
-        
+      <header>        
         <Navbar
           className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3"
           light
@@ -57,11 +52,7 @@ const NavMenu = () => {
                   </NavLink>
                 </NavItem>
                 <LoginMenu></LoginMenu>
-                <Button
-                  onClick={() => setOpen(!open)}
-                >
-                  <FontAwesomeIcon icon={faCoffee} />
-                </Button>
+                <SideBar></SideBar>
               </ul>
             </Collapse>
           </Container>
