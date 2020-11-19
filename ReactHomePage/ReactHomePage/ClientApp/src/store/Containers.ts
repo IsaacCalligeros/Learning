@@ -2,7 +2,6 @@
 import { action, thunk, computed } from 'easy-peasy';
 
 import ContainersModel from './ContainersModel';
-import container from '../components/containers/types';
 
 const Containers: ContainersModel = {
   containers: [],
@@ -14,7 +13,7 @@ const Containers: ContainersModel = {
     state.containers.push(container);
   }),
   updateContainer: action((state, aContainer) => {
-    const elementsIndex = state.containers.findIndex(element => element.i == aContainer.i);
+    const elementsIndex = state.containers.findIndex(element => element.layout.i == aContainer.layout.i);
     let newArray = [...state.containers];
     newArray[elementsIndex] = aContainer;
     state.containers = newArray

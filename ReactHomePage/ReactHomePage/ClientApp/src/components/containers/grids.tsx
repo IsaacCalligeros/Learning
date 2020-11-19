@@ -3,14 +3,15 @@ import _ from "lodash";
 import { Responsive, WidthProvider, Layout } from "react-grid-layout";
 import "../../CSS/grid-layout.scss";
 import Weather from "../Weather/Weather";
-import ContainerTypes from "./types"
 import { useStoreActions, useStoreState } from "../../hooks";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
+import { ComponentLayouts, ControlType, ComponentLayout } from "./types";
+import News from "../News/News";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 interface DragFromOutsideLayoutProps {
-  layouts:  ContainerTypes.Layouts;
+  layouts: ComponentLayouts;
 }
 
 const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
@@ -24,9 +25,9 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
   const addContainer = useStoreActions(
     (state) => state.containers.addContainer
   );
-  
+
   const [currentBreakpoint, setCurrentBreakpoint] = useState("lg");
-  const [compactType, setCompactType] = useState<string | null>("vertical");
+  const [compactType, setCompactType] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -43,8 +44,15 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
   };
 
   const onDrop = (layout: any, layoutItem: Layout, event: any) => {
+    console.dir(layout);
+    console.dir(layoutItem);
+    console.dir(event);
     layoutItem.i = uuidv4();
-    addContainer(layoutItem);
+    const newContainer: ComponentLayout = {
+      layout: layoutItem,
+      componentType: ControlType.Weather,
+    };
+    addContainer(newContainer);
   };
 
   const onRemoveItem = (i: any) => {
@@ -54,11 +62,16 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
   const generateDOM = () => {
     return _.map(props.layouts.lg, (l) => {
       return (
-        <div key={l.i} className="control-container" data-grid={l}>
-          <span className="remove" onClick={() => onRemoveItem(l.i)}>
-            X {l.i}
+        <div
+          key={l.layout.i}
+          className="control-container"
+          data-grid={l.layout}
+        >
+          <span className="remove" onClick={() => onRemoveItem(l.layout.i)}>
+            X {l.layout.i}
           </span>
-          <Weather></Weather>
+          {l.componentType == ControlType.Weather && <Weather></Weather> }
+          {l.componentType == ControlType.News && <News></News> }
         </div>
       );
     });

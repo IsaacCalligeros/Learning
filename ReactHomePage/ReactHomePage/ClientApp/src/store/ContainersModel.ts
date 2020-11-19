@@ -1,14 +1,13 @@
 import { Action, Thunk, Computed } from 'easy-peasy';
 
-import container from '../components/containers/types';
-import { Layout } from 'react-grid-layout';
+import { ComponentLayout } from '../components/containers/types';
 
 export default interface ContainersModel {
-  containers: Layout[];
-  currentContainers: Computed<ContainersModel, Layout[]>;
-  setContainers: Action<ContainersModel, Layout[]>;
-  addContainer: Action<ContainersModel, Layout>;
-  updateContainer: Action<ContainersModel, Layout>;
-  createContainer: Thunk<ContainersModel, Layout>;
+  containers: ComponentLayout[];
+  currentContainers: Computed<ContainersModel, ComponentLayout[]>;
+  setContainers: Action<ContainersModel, ComponentLayout[]>;
+  addContainer: Action<ContainersModel, ComponentLayout>;
+  updateContainer: Action<ContainersModel, ComponentLayout>;
+  createContainer: Thunk<ContainersModel, ComponentLayout>;
   getContainers: Thunk<ContainersModel>;
 }
