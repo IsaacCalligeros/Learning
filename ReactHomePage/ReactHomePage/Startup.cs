@@ -54,8 +54,8 @@ namespace ReactHomePage
             });
 
             services.AddHttpClient(HttpClientHelper.News, client => {
-                client.BaseAddress = new Uri("https://newsapi.org/v2/everything?q=");
-                client.DefaultRequestHeaders.Add("apiKey", Configuration["newsApiKey"]);
+                //Why do they make it a query paramater...
+                client.BaseAddress = new Uri("https://newsapi.org/v2/");
             });
 
             services.AddSwaggerDocument(configure => configure.Title = "Home page API");

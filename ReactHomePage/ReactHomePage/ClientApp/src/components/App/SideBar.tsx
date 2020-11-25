@@ -105,7 +105,7 @@ const SideBar = () => {
     <div>
       {(["left"] as Anchor[]).map((anchor) => (
         <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
+          <Button onClick={toggleDrawer(anchor, true)}>Sidebar</Button>
           <Drawer
             anchor={anchor}
             open={state[anchor]}

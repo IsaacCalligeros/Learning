@@ -12,9 +12,6 @@ import { Link } from "react-router-dom";
 import { LoginMenu } from "../api-authorization/LoginMenu";
 import "../../CSS/NavMenu.scss";
 import { SideBar } from "./SideBar";
-import { Button } from "reactstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 
 const NavMenu = () => {
     const [collapsed, setCollapsed] = useState(true);
@@ -31,6 +28,8 @@ const NavMenu = () => {
           light
         >
           <Container>
+          <SideBar></SideBar>
+          
             <NavbarBrand tag={Link} to="/">
               ReactHomePage
             </NavbarBrand>
@@ -41,18 +40,7 @@ const NavMenu = () => {
               navbar
             >
               <ul className="navbar-nav flex-grow">
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/">
-                    Home
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/fetch-data">
-                    Fetch data
-                  </NavLink>
-                </NavItem>
                 <LoginMenu></LoginMenu>
-                <SideBar></SideBar>
               </ul>
             </Collapse>
           </Container>

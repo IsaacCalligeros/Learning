@@ -6,7 +6,9 @@ import Weather from "../Weather/Weather";
 import { useStoreActions, useStoreState } from "../../hooks";
 import { v4 as uuidv4 } from "uuid";
 import { ComponentLayouts, ControlType, ComponentLayout } from "./types";
-import News from "../News/News";
+import { News } from "../News/News";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -26,9 +28,14 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
     (state) => state.containers.addContainer
   );
 
+  const setLayouts = useStoreActions(
+    (state) => state.containers.setContainers
+  );
+
   const [currentBreakpoint, setCurrentBreakpoint] = useState("lg");
   const [compactType, setCompactType] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  
 
   useEffect(() => {
     setMounted(true);
@@ -56,7 +63,7 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
   };
 
   const onRemoveItem = (i: any) => {
-    //  setLayouts({ lg: _.reject(props.layouts.lg, { i: i }) });
+    setLayouts(_.reject(props.layouts.lg, l => l.layout.i == i));
   };
 
   const generateDOM = () => {
@@ -67,11 +74,11 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
           className="control-container"
           data-grid={l.layout}
         >
-          <span className="remove" onClick={() => onRemoveItem(l.layout.i)}>
-            X {l.layout.i}
-          </span>
-          {l.componentType == ControlType.Weather && <Weather></Weather> }
-          {l.componentType == ControlType.News && <News></News> }
+          <button className="remove" onClick={() => onRemoveItem(l.layout.i)}>
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+          {l.componentType == ControlType.Weather && <Weather></Weather>}
+          {l.componentType == ControlType.News && <News></News>}
         </div>
       );
     });

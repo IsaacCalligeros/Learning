@@ -7,7 +7,7 @@ const Weather = () => {
   const [forecasts, setForecasts] = useState<WeatherTypes.forecast[]>([]);
 
   useEffect(() => {
-      axiosInstance.get("/weather").then((res) => {
+      axiosInstance.get("/weatherforecast").then((res) => {
         setForecasts(res.data);
         setLoading(false);
       });

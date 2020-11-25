@@ -9,6 +9,14 @@
 
 .control-container {
   overflow: hidden;
+  position: relative;
+
+  .remove {
+    position: absolute;
+    right: 0;
+    margin: 0.2em;
+    background-color: red;
+  }
 }
 
 .react-grid-layout {
@@ -18,8 +26,9 @@
   .react-grid-item {
     transition: all 200ms ease;
     transition-property: left, top;
-    background: #ccc;
+    background: white;
     border: 1px solid black;
+    box-shadow: 6px 6px 4px #888888;
   }
   .react-grid-item img {
     pointer-events: none;
