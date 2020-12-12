@@ -9,6 +9,115 @@
 
 
 
+export class BaseContainer implements IBaseContainer {
+    containerId!: number;
+    userId?: string | undefined;
+    layout?: Layout | undefined;
+    componentType!: ComponentType;
+
+    constructor(data?: IBaseContainer) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.containerId = _data["containerId"];
+            this.userId = _data["userId"];
+            this.layout = _data["layout"] ? Layout.fromJS(_data["layout"]) : <any>undefined;
+            this.componentType = _data["componentType"];
+        }
+    }
+
+    static fromJS(data: any): BaseContainer {
+        data = typeof data === 'object' ? data : {};
+        let result = new BaseContainer();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["containerId"] = this.containerId;
+        data["userId"] = this.userId;
+        data["layout"] = this.layout ? this.layout.toJSON() : <any>undefined;
+        data["componentType"] = this.componentType;
+        return data; 
+    }
+}
+
+export interface IBaseContainer {
+    containerId: number;
+    userId?: string | undefined;
+    layout?: Layout | undefined;
+    componentType: ComponentType;
+}
+
+export class Layout implements ILayout {
+    containerId!: number;
+    i?: string | undefined;
+    h!: number;
+    w!: number;
+    x!: number;
+    y!: number;
+
+    constructor(data?: ILayout) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.containerId = _data["containerId"];
+            this.i = _data["i"];
+            this.h = _data["h"];
+            this.w = _data["w"];
+            this.x = _data["x"];
+            this.y = _data["y"];
+        }
+    }
+
+    static fromJS(data: any): Layout {
+        data = typeof data === 'object' ? data : {};
+        let result = new Layout();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["containerId"] = this.containerId;
+        data["i"] = this.i;
+        data["h"] = this.h;
+        data["w"] = this.w;
+        data["x"] = this.x;
+        data["y"] = this.y;
+        return data; 
+    }
+}
+
+export interface ILayout {
+    containerId: number;
+    i?: string | undefined;
+    h: number;
+    w: number;
+    x: number;
+    y: number;
+}
+
+export enum ComponentType {
+    News = 0,
+    Weather = 1,
+}
+
 export class NewsDto implements INewsDto {
     status?: string | undefined;
     totalResults!: number;

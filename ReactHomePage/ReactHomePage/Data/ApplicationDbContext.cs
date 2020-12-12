@@ -21,5 +21,16 @@ namespace ReactHomePage.Data
         public DbSet<Weather> Weather { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<News> News { get; set; }
+        public DbSet<BaseContainer> Containers { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            //modelBuilder.Entity<BaseContainer>()
+            //    .HasKey(x => new { x.ContainerId, x.Layout });
+            //modelBuilder.Entity<BaseContainer>()
+            //    .HasOne(p => p.Layout);
+        }
     }
 }

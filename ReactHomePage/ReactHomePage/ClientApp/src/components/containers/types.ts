@@ -1,12 +1,9 @@
 import { Layout } from "react-grid-layout";
+import { ComponentType } from "../../models/models";
 
-export enum ControlType {
-  Weather,
-  News,
-}
 export interface ComponentLayout {
   layout: Layout;
-  componentType: ControlType;
+  componentType: ComponentType;
 }
 export interface ComponentLayouts {
   lg: ComponentLayout[];

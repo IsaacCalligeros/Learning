@@ -5,10 +5,11 @@ import "../../CSS/grid-layout.scss";
 import Weather from "../Weather/Weather";
 import { useStoreActions, useStoreState } from "../../hooks";
 import { v4 as uuidv4 } from "uuid";
-import { ComponentLayouts, ControlType, ComponentLayout } from "./types";
+import { ComponentLayouts, ComponentLayout } from "./types";
 import { News } from "../News/News";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { ComponentType } from "../../models/models";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -28,14 +29,24 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
     (state) => state.containers.addContainer
   );
 
-  const setLayouts = useStoreActions(
-    (state) => state.containers.setContainers
+  const setLayouts = useStoreActions((state) => state.containers.setContainers);
+
+  const saveLayouts = useStoreActions(
+    (state) => state.containers.saveContainerState
+  );
+
+  const updateLayout = useStoreActions(
+    (state) => state.containers.updateContainers
+  );
+
+  const deleteLayout = useStoreActions(
+    (state) => state.containers.deleteContainer
   );
 
   const [currentBreakpoint, setCurrentBreakpoint] = useState("lg");
   const [compactType, setCompactType] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
-  
+  const [isInitialLoad, setInitialLoad] = useState(true);
 
   useEffect(() => {
     setMounted(true);
@@ -45,29 +56,42 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
     setCurrentBreakpoint(currentBreakpoint);
   };
 
-  const onLayoutChange = (layout: any, layouts: any) => {
-    console.dir(layout, layouts);
-    // this.props.onLayoutChange(layout, layouts);
+  const onLayoutChange = (layouts: Layout[]) => {
+    // should be a clener way
+    // if (layouts.length > 0 && !isInitialLoad) {
+    //   const layoutIds = layouts.map((l) => l.i);
+    //   const localLayouts = _.clone(props.layouts);
+
+    //   layouts.forEach((layout) => {
+    //     const idx = layoutIds.indexOf(layout.i);
+    //     if (idx !== -1) {
+    //       localLayouts.lg[idx].layout = layout;
+    //     }
+    //   });
+    //   updateLayout(localLayouts.lg);
+    // }
+    // setInitialLoad(false);
   };
 
   const onDrop = (layout: any, layoutItem: Layout, event: any) => {
-    console.dir(layout);
-    console.dir(layoutItem);
-    console.dir(event);
     layoutItem.i = uuidv4();
     const newContainer: ComponentLayout = {
       layout: layoutItem,
-      componentType: ControlType.Weather,
+      componentType: ComponentType.Weather,
     };
     addContainer(newContainer);
+
+    saveLayouts(newContainer);
   };
 
   const onRemoveItem = (i: any) => {
-    setLayouts(_.reject(props.layouts.lg, l => l.layout.i == i));
+    deleteLayout(i);
+    setLayouts(_.reject(props.layouts.lg, (l) => l.layout.i == i));
   };
 
   const generateDOM = () => {
     return _.map(props.layouts.lg, (l) => {
+      console.log(l);
       return (
         <div
           key={l.layout.i}
@@ -77,8 +101,8 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
           <button className="remove" onClick={() => onRemoveItem(l.layout.i)}>
             <FontAwesomeIcon icon={faTimes} />
           </button>
-          {l.componentType == ControlType.Weather && <Weather></Weather>}
-          {l.componentType == ControlType.News && <News></News>}
+          {l.componentType == ComponentType.Weather && <Weather></Weather>}
+          {l.componentType == ComponentType.News && <News></News>}
         </div>
       );
     });
@@ -89,7 +113,7 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
       <ResponsiveReactGridLayout
         {...defaultProps}
         onBreakpointChange={() => onBreakpointChange}
-        //   onLayoutChange={this.onLayoutChange}
+        onLayoutChange={onLayoutChange}
         onDrop={onDrop}
         // WidthProvider option
         measureBeforeMount={false}

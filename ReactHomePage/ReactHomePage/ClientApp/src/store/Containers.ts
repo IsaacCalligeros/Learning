@@ -1,7 +1,8 @@
-  
-import { action, thunk, computed } from 'easy-peasy';
+import { action, thunk, computed } from "easy-peasy";
+import axiosInstance from "../axiosInstance";
 
-import ContainersModel from './ContainersModel';
+import ContainersModel from "./ContainersModel";
+import { BaseContainer } from "../models/models";
 
 const Containers: ContainersModel = {
   containers: [],
@@ -12,28 +13,43 @@ const Containers: ContainersModel = {
   addContainer: action((state, container) => {
     state.containers.push(container);
   }),
-  updateContainer: action((state, aContainer) => {
-    const elementsIndex = state.containers.findIndex(element => element.layout.i == aContainer.layout.i);
-    let newArray = [...state.containers];
-    newArray[elementsIndex] = aContainer;
-    state.containers = newArray
+  deleteContainer: thunk(async (state, i) => {
+    const url = `api/Containers/Delete/${i}`;
+    axiosInstance
+      .delete(url)
+      .then((res) => {
+        return res.data;
+      });
+    // const elementsIndex = state.containers.findIndex(
+    //   (element) => element.layout.i == aContainer.layout.i
+    // );
+    // let newArray = [...state.containers];
+    // newArray[elementsIndex] = aContainer;
+    // state.containers = newArray;
+  }),
+  updateContainers: thunk(async (state, containers) => {
+    axiosInstance
+      .post("api/Containers/UpdateContainers", containers)
+      .then((res) => {
+      });
+    // const elementsIndex = state.containers.findIndex(
+    //   (element) => element.layout.i == aContainer.layout.i
+    // );
+    // let newArray = [...state.containers];
+    // newArray[elementsIndex] = aContainer;
+    // state.containers = newArray;
   }),
   //Tempo code from an example Coding garden tute, to be transfered when serverside set up
-  createContainer: thunk(async (state, entry) => {
-    const response = await fetch('http://localhost:5454/entries', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(entry),
-    });
-    const result = await response.json();
-    state.addContainer(result);
-  }),
+  createContainer: thunk(async (state, entry) => {}),
   getContainers: thunk(async (state) => {
-    const response = await fetch('http://localhost:5454/entries');
-    const entries = await response.json();
-    state.setContainers(entries);
+    axiosInstance.get("api/Containers/getContainers").then((res) => {
+      state.setContainers(res.data);
+    });
+  }),
+  saveContainerState: thunk(async (state, newContainer) => {
+    axiosInstance
+      .post("api/Containers/SaveContainer", newContainer)
+      .then((res) => {});
   }),
 };
 

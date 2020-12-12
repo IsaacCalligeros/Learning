@@ -4,8 +4,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
 import { useStoreActions } from "../../hooks";
-import { ComponentLayout, ControlType } from "../containers/types";
+import { ComponentLayout } from "../containers/types";
 import { v4 as uuidv4 } from 'uuid';
+import { ComponentType } from "../../models/models";
 
 const useStyles = makeStyles({
   list: {
@@ -31,6 +32,10 @@ const SideBar = () => {
     (state) => state.containers.addContainer
   );
 
+  const saveContainers = useStoreActions(
+    (state) => state.containers.saveContainerState
+  );
+
 
   const toggleDrawer = (anchor: Anchor, open: boolean) => (
     event: React.KeyboardEvent | React.MouseEvent
@@ -46,7 +51,7 @@ const SideBar = () => {
     setState({ ...state, [anchor]: open });
   };
 
-  const addControl = (controlType: ControlType) => {
+  const addControl = (componentType: ComponentType) => {
     const newContainer: ComponentLayout = {
       layout: {
       i: uuidv4(),
@@ -55,9 +60,12 @@ const SideBar = () => {
       x: 0,
       y: 0,
       },
-      componentType: controlType
+      componentType: componentType
     };
+
+    const res = saveContainers(newContainer);
     addContainer(newContainer);
+    
   }
 
   const list = (anchor: Anchor) => (
@@ -83,7 +91,7 @@ const SideBar = () => {
         onDragStart={(e) => e.dataTransfer.setData("text/plain", "")}
       >
         Droppable Element (Drag me!)
-        <button onClick={() => addControl(ControlType.News)}>News</button>
+        <button onClick={() => addControl(ComponentType.News)}>News</button>
       </div>
       <div
         className="droppable-element"
@@ -96,7 +104,7 @@ const SideBar = () => {
         onDragStart={(e) => e.dataTransfer.setData("text/plain", "")}
       >
         Droppable Element 2
-        <button onClick={() => addControl(ControlType.Weather)}>Weather</button>
+        <button onClick={() => addControl(ComponentType.Weather)}>Weather</button>
       </div>
     </div>
   );

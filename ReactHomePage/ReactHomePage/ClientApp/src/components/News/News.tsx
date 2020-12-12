@@ -14,7 +14,6 @@ const News = () => {
   };
 
   useEffect(() => {
-    console.dir("Effecting it up");
     axiosInstance
       .get("api/news/GetNews", {
         params: {
@@ -56,7 +55,7 @@ const News = () => {
               <td>
                 {article.author}
                 <br />
-                <a href={article.url}>{article.url?.split(".com")[0]}</a>
+                <a href={article.url} target="_blank">{article.url?.split(".com")[0]}</a>
               </td>
               <td>{article.description}</td>
             </tr>

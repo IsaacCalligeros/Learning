@@ -299,23 +299,38 @@ namespace ReactHomePage.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("ReactHomePage.Models.News", b =>
+            modelBuilder.Entity("ReactHomePage.Models.BaseContainer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ContainerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<Guid>("ControlId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("ComponentType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("LayoutI")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("ContainerId");
+
+                    b.HasIndex("LayoutI");
+
+                    b.ToTable("Containers");
+                });
+
+            modelBuilder.Entity("ReactHomePage.Models.Layout", b =>
+                {
+                    b.Property<string>("I")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ContainerId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("H")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("NewsSource")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.Property<int>("W")
@@ -325,6 +340,21 @@ namespace ReactHomePage.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("Y")
+                        .HasColumnType("integer");
+
+                    b.HasKey("I");
+
+                    b.ToTable("Layout");
+                });
+
+            modelBuilder.Entity("ReactHomePage.Models.News", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("NewsSource")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -339,28 +369,10 @@ namespace ReactHomePage.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<Guid>("ControlId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("H")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Ticker")
                         .HasColumnType("text");
 
                     b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("W")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("X")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Y")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -378,29 +390,11 @@ namespace ReactHomePage.Migrations
                     b.Property<string>("CityName")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("ControlId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("H")
-                        .HasColumnType("integer");
-
                     b.Property<double?>("Latitude")
                         .HasColumnType("double precision");
 
                     b.Property<double?>("Longitude")
                         .HasColumnType("double precision");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("W")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("X")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Y")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -456,6 +450,13 @@ namespace ReactHomePage.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ReactHomePage.Models.BaseContainer", b =>
+                {
+                    b.HasOne("ReactHomePage.Models.Layout", "Layout")
+                        .WithMany()
+                        .HasForeignKey("LayoutI");
                 });
 #pragma warning restore 612, 618
         }

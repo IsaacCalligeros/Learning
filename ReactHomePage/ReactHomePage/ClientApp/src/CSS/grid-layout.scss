@@ -9,6 +9,7 @@
 
 .control-container {
   overflow: hidden;
+  overflow-y: auto;
   position: relative;
 
   .remove {

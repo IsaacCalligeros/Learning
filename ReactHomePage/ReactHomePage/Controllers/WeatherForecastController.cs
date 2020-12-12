@@ -15,7 +15,7 @@ namespace ReactHomePage.Controllers
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : BaseController
+    public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
@@ -26,7 +26,7 @@ namespace ReactHomePage.Controllers
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger,
            IHttpContextAccessor httpContextAccessor,
-           UserManager<ApplicationUser> userManager) : base(httpContextAccessor, userManager)
+           UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
         }

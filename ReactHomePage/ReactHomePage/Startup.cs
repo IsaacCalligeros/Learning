@@ -17,6 +17,8 @@ using System.Linq;
 using ReactHomePage.Repositories;
 using AutoMapper;
 using ReactHomePage.Helpers;
+using ReactHomePage.Data.Repositories;
+using ReactHomePage.Services;
 
 namespace ReactHomePage
 {
@@ -44,6 +46,18 @@ namespace ReactHomePage
                 if (tInter != null) services.AddScoped(tInter, t);
             }
 
+            var serviceBaseHelperType = typeof(ServiceBaseHelper);
+            var serviceHelperTypes = serviceBaseHelperType.Assembly
+                .GetTypes()
+                .Where(t => t != serviceBaseHelperType && serviceBaseHelperType.IsAssignableFrom(t))
+                .ToArray();
+
+            //Temporary lazy scoped for development, want to have ServiceBaseHelper of type on each service and specify there.
+            foreach (var serviceHelper in serviceHelperTypes)
+            {
+                AddScoped(serviceHelper);
+            }
+
             services.AddHttpClient(HttpClientHelper.Weather, client => {
                 client.BaseAddress = new Uri("https://api.openweathermap.org/");
             });
@@ -62,8 +76,9 @@ namespace ReactHomePage
 
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
-            services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options => 
-            options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(options => 
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
