@@ -23,6 +23,7 @@ namespace ReactHomePage.Enumerations
         {
             News,
             Weather,
+            Portfolio
 
         }
     }

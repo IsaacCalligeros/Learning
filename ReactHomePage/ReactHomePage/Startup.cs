@@ -62,7 +62,7 @@ namespace ReactHomePage
                 client.BaseAddress = new Uri("https://api.openweathermap.org/");
             });
 
-            services.AddHttpClient(HttpClientHelper.Stocks, client => {
+            services.AddHttpClient(HttpClientHelper.Equity, client => {
                 client.BaseAddress = new Uri("https://finnhub.io/api/v1/");
                 client.DefaultRequestHeaders.Add("X-Finnhub-Token", Configuration["finnHubKey"]);
             });
@@ -83,6 +83,7 @@ namespace ReactHomePage
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<AppRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()

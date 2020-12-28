@@ -13,12 +13,13 @@ namespace ReactHomePage.Helpers
 
         public static UserDetails GetUserDetails(this ClaimsPrincipal claimsPrincipal)
         {
-            if(_UserDetails?.UserId != null)
+            if(_UserDetails?.UserId != null && _UserDetails?.UserId != 0)
             {
                 return _UserDetails;
             }
 
-            var userId = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userIdStr = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            int.TryParse(userIdStr, out var userId);
             var email = claimsPrincipal.FindFirst(ClaimTypes.Email)?.Value;
             var role = claimsPrincipal.FindFirst(ClaimTypes.Role)?.Value;
 

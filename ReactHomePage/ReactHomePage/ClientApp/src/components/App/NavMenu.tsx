@@ -12,8 +12,12 @@ import { Link } from "react-router-dom";
 import { LoginMenu } from "../api-authorization/LoginMenu";
 import "../../CSS/NavMenu.scss";
 import { SideBar } from "./SideBar";
+import { ContainersStore } from "../../store/containersStore";
 
-const NavMenu = () => {
+interface NavMenuProps {
+  containersStore: ContainersStore;
+}
+const NavMenu = (props: NavMenuProps) => {
     const [collapsed, setCollapsed] = useState(true);
     const [open, setOpen] = useState(false);
 
@@ -28,7 +32,7 @@ const NavMenu = () => {
           light
         >
           <Container>
-          <SideBar></SideBar>
+          <SideBar containersStore={props.containersStore}></SideBar>
           
             <NavbarBrand tag={Link} to="/">
               ReactHomePage

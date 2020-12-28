@@ -65,6 +65,12 @@ namespace ReactHomePage.Data.Repositories
             DataContext.Set<T>().Remove(entity);
         }
 
+        public void DeleteById<T>(object id) where T : class
+        {
+            var entity = DataContext.Set<T>().Find(id);
+            DataContext.Set<T>().Remove(entity);
+        }
+
         public void DeleteRange(IEnumerable<T> entities)
         {
             DataContext.Set<T>().RemoveRange(entities);

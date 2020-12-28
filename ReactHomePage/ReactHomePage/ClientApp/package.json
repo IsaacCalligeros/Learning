@@ -18,10 +18,11 @@
     "@types/reactstrap": "^8.5.2",
     "axios": "^0.20.0",
     "bootstrap": "^4.1.3",
-    "easy-peasy": "^4.0.1",
     "jquery": "^3.4.1",
     "lodash": "^4.17.20",
     "merge": "^1.2.1",
+    "mobx": "5.9.0",
+    "mobx-react-lite": "1.0.1",
     "oidc-client": "^1.9.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
@@ -32,9 +33,11 @@
     "react-scripts": "^3.4.1",
     "reactstrap": "^8.4.1",
     "rimraf": "^2.6.2",
-    "sass": "^1.29.0"
+    "sass": "^1.29.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/uuid": "^8.3.0",
     "ajv": "^6.9.1",
     "cross-env": "^5.2.0",
     "eslint": "^6.8.0",

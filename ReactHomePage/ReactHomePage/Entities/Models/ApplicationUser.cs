@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace ReactHomePage.Models
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser<int>
+    {
+    }
+    public class AppRole : IdentityRole<int>
     {
     }
 }

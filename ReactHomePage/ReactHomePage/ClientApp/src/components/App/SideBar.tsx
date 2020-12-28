@@ -1,12 +1,12 @@
-import React from "react";
+import React, { Component } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
-import { useStoreActions } from "../../hooks";
-import { ComponentLayout } from "../containers/types";
-import { v4 as uuidv4 } from 'uuid';
+import { ComponentLayout } from "../Containers/types";
+import { v4 as uuidv4 } from "uuid";
 import { ComponentType } from "../../models/models";
+import { ContainersStore } from "../../store/containersStore";
 
 const useStyles = makeStyles({
   list: {
@@ -19,7 +19,11 @@ const useStyles = makeStyles({
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
-const SideBar = () => {
+interface sideBarProps {
+  containersStore: ContainersStore;
+}
+
+const SideBar = (props: sideBarProps) => {
   const classes = useStyles();
   const [state, setState] = React.useState({
     top: false,
@@ -28,14 +32,9 @@ const SideBar = () => {
     right: false,
   });
 
-  const addContainer = useStoreActions(
-    (state) => state.containers.addContainer
+  const componentTypes = Object.values(ComponentType).filter(
+    (t): t is ComponentType => typeof t === "number"
   );
-
-  const saveContainers = useStoreActions(
-    (state) => state.containers.saveContainerState
-  );
-
 
   const toggleDrawer = (anchor: Anchor, open: boolean) => (
     event: React.KeyboardEvent | React.MouseEvent
@@ -54,19 +53,17 @@ const SideBar = () => {
   const addControl = (componentType: ComponentType) => {
     const newContainer: ComponentLayout = {
       layout: {
-      i: uuidv4(),
-      w: 2,
-      h: 2,
-      x: 0,
-      y: 0,
+        i: uuidv4(),
+        w: 2,
+        h: 2,
+        x: 0,
+        y: 0,
       },
-      componentType: componentType
+      componentType: componentType,
     };
 
-    const res = saveContainers(newContainer);
-    addContainer(newContainer);
-    
-  }
+    const res = props.containersStore.saveContainer(newContainer);
+  };
 
   const list = (anchor: Anchor) => (
     <div
@@ -80,32 +77,22 @@ const SideBar = () => {
       //Can reopen etc?
       //onDragEnd={toggleDrawer(anchor, false)}
     >
-      <div
-        className="droppable-element"
-        draggable={true}
-        unselectable="on"
-        // this is a hack for firefox
-        // Firefox requires some kind of initialization
-        // which we can do by adding this attribute
-        // @see https://bugzilla.mozilla.org/show_bug.cgi?id=568313
-        onDragStart={(e) => e.dataTransfer.setData("text/plain", "")}
-      >
-        Droppable Element (Drag me!)
-        <button onClick={() => addControl(ComponentType.News)}>News</button>
-      </div>
-      <div
-        className="droppable-element"
-        draggable={true}
-        unselectable="on"
-        // this is a hack for firefox
-        // Firefox requires some kind of initialization
-        // which we can do by adding this attribute
-        // @see https://bugzilla.mozilla.org/show_bug.cgi?id=568313
-        onDragStart={(e) => e.dataTransfer.setData("text/plain", "")}
-      >
-        Droppable Element 2
-        <button onClick={() => addControl(ComponentType.Weather)}>Weather</button>
-      </div>
+      {componentTypes?.map((c, idx) => (
+        <div
+          className="droppable-element"
+          draggable={true}
+          unselectable="on"
+          key={c}
+          // this is a hack for firefox
+          // Firefox requires some kind of initialization
+          // which we can do by adding this attribute
+          // @see https://bugzilla.mozilla.org/show_bug.cgi?id=568313
+          onDragStart={(e) => e.dataTransfer.setData("text/plain", "")}
+        >
+          (Drag me!)
+          <button onClick={() => addControl(c)}>{ComponentType[c]}</button>
+        </div>
+      ))}
     </div>
   );
 

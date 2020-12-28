@@ -9,6 +9,7 @@ using ReactHomePage.Repositories.Interfaces;
 using ReactHomePage.Data;
 using ReactHomePage.Models;
 using ReactHomePage.Data.Repositories;
+using ReactHomePage.Data.Repositories.Interfaces;
 
 namespace ReactHomePage.Data.Repositories
 {
@@ -19,8 +20,9 @@ namespace ReactHomePage.Data.Repositories
         private ApplicationDbContext _dataContext;
         private IWeatherRepository _weather;
         private INewsRepository _news;
-        private IStockRepository _stock;
+        private IEquityRepository _equity;
         private IContainerRepository _container;
+        private IPortfolioRepository _portfolio;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -56,16 +58,16 @@ namespace ReactHomePage.Data.Repositories
             }
         }
 
-        public IStockRepository Stocks
+        public IEquityRepository Equities
         {
             get
             {
-                if (_stock == null)
+                if (_equity == null)
                 {
-                    _stock = new StockRepository(_dataContext);
+                    _equity = new EquityRepository(_dataContext);
                 }
 
-                return _stock;
+                return _equity;
             }
         }
 
@@ -82,6 +84,19 @@ namespace ReactHomePage.Data.Repositories
             }
         }
 
+        public IPortfolioRepository Portfolios
+        {
+            get
+            {
+                if (_portfolio == null)
+                {
+                    _portfolio = new PortfolioRepository(_dataContext);
+                }
+
+                return _portfolio;
+            }
+        }
+
         public async Task<bool> SaveAsync(string savingEntity)
         {
             addAuditableFields(_dataContext, savingEntity);
@@ -91,6 +106,11 @@ namespace ReactHomePage.Data.Repositories
         public async Task<bool> SaveAsync()
         {
             return await _dataContext.SaveChangesAsync() > 0;
+        }
+
+        public bool SaveChanges()
+        {
+            return _dataContext.SaveChanges() > 0;
         }
 
         private void addAuditableFields(ApplicationDbContext data, string savingEntity)

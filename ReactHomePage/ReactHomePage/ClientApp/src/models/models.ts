@@ -11,7 +11,7 @@
 
 export class BaseContainer implements IBaseContainer {
     containerId!: number;
-    userId?: string | undefined;
+    userId!: number;
     layout?: Layout | undefined;
     componentType!: ComponentType;
 
@@ -52,7 +52,7 @@ export class BaseContainer implements IBaseContainer {
 
 export interface IBaseContainer {
     containerId: number;
-    userId?: string | undefined;
+    userId: number;
     layout?: Layout | undefined;
     componentType: ComponentType;
 }
@@ -116,6 +116,160 @@ export interface ILayout {
 export enum ComponentType {
     News = 0,
     Weather = 1,
+    Portfolio = 2,
+}
+
+export class Equity implements IEquity {
+    id!: number;
+    ticker?: string | undefined;
+    type!: EquityType;
+    portfolio?: Portfolio | undefined;
+
+    constructor(data?: IEquity) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.ticker = _data["ticker"];
+            this.type = _data["type"];
+            this.portfolio = _data["portfolio"] ? Portfolio.fromJS(_data["portfolio"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): Equity {
+        data = typeof data === 'object' ? data : {};
+        let result = new Equity();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["ticker"] = this.ticker;
+        data["type"] = this.type;
+        data["portfolio"] = this.portfolio ? this.portfolio.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IEquity {
+    id: number;
+    ticker?: string | undefined;
+    type: EquityType;
+    portfolio?: Portfolio | undefined;
+}
+
+export enum EquityType {
+    Stock = 0,
+    Cryptocurrency = 1,
+}
+
+export class Portfolio implements IPortfolio {
+    id!: number;
+    userId!: number;
+    equities?: Equity[] | undefined;
+
+    constructor(data?: IPortfolio) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.userId = _data["userId"];
+            if (Array.isArray(_data["equities"])) {
+                this.equities = [] as any;
+                for (let item of _data["equities"])
+                    this.equities!.push(Equity.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Portfolio {
+        data = typeof data === 'object' ? data : {};
+        let result = new Portfolio();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["userId"] = this.userId;
+        if (Array.isArray(this.equities)) {
+            data["equities"] = [];
+            for (let item of this.equities)
+                data["equities"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPortfolio {
+    id: number;
+    userId: number;
+    equities?: Equity[] | undefined;
+}
+
+export class ASXCompanies implements IASXCompanies {
+    ticker?: string | undefined;
+    company?: string | undefined;
+    listingDate?: Date | undefined;
+    industry?: string | undefined;
+
+    constructor(data?: IASXCompanies) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.ticker = _data["ticker"];
+            this.company = _data["company"];
+            this.listingDate = _data["listingDate"] ? new Date(_data["listingDate"].toString()) : <any>undefined;
+            this.industry = _data["industry"];
+        }
+    }
+
+    static fromJS(data: any): ASXCompanies {
+        data = typeof data === 'object' ? data : {};
+        let result = new ASXCompanies();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["ticker"] = this.ticker;
+        data["company"] = this.company;
+        data["listingDate"] = this.listingDate ? this.listingDate.toISOString() : <any>undefined;
+        data["industry"] = this.industry;
+        return data; 
+    }
+}
+
+export interface IASXCompanies {
+    ticker?: string | undefined;
+    company?: string | undefined;
+    listingDate?: Date | undefined;
+    industry?: string | undefined;
 }
 
 export class NewsDto implements INewsDto {

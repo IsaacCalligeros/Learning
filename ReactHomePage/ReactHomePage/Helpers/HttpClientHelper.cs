@@ -9,6 +9,6 @@ namespace ReactHomePage.Helpers
     {
         public static string News => "News";
         public static string Weather => "Weather";
-        public static string Stocks => "Stocks";
+        public static string Equity => "Equity";
     }
 }

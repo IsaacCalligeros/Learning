@@ -9,6 +9,6 @@ namespace ReactHomePage.Repositories.Interfaces
 {
     public interface IContainerRepository : IRepository<BaseContainer>
     {
-        IEnumerable<BaseContainer> GetUserContainers(string userId);
+        IEnumerable<BaseContainer> GetUserContainers(int userId);
     }
 }

@@ -11,12 +11,16 @@ namespace ReactHomePage.Repositories.Interfaces
         public void Create(T entity);
         public void CreateRange(IEnumerable<T> entities);
         void Delete(T entity);
+        void DeleteById<T>(object id) where T : class;
         void DeleteRange(IEnumerable<T> entities);
         Task<bool> SaveAll();
         public IQueryable<T> FindAll();
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression);
         public void Update(T entity);
         public Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match);
+
+#pragma warning disable CS0693 // Type parameter has the same name as the type parameter from outer type
         public T FindById<T>(object id) where T : class;
+#pragma warning restore CS0693 // Type parameter has the same name as the type parameter from outer type
     }
 }

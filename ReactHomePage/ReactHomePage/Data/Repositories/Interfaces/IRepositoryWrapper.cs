@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReactHomePage.Data.Repositories.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,10 +10,12 @@ namespace ReactHomePage.Repositories.Interfaces
     {
         IWeatherRepository Weather { get; }
         INewsRepository News { get; }
-        IStockRepository Stocks { get; }
+        IEquityRepository Equities { get; }
         IContainerRepository Containers { get; }
+        IPortfolioRepository Portfolios { get; }
 
         Task<bool> SaveAsync(string savingEntity);
         Task<bool> SaveAsync();
+        bool SaveChanges();
     }
 }

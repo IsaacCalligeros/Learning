@@ -20,7 +20,7 @@ namespace ReactHomePage.Data.Repositories
             _context = context;
         }
 
-        public IEnumerable<BaseContainer> GetUserContainers(string userId)
+        public IEnumerable<BaseContainer> GetUserContainers(int userId)
         {
             return _context.Containers
                 .Include(u => u.Layout)

@@ -3,45 +3,33 @@ import _ from "lodash";
 import { Responsive, WidthProvider, Layout } from "react-grid-layout";
 import "../../CSS/grid-layout.scss";
 import Weather from "../Weather/Weather";
-import { useStoreActions, useStoreState } from "../../hooks";
 import { v4 as uuidv4 } from "uuid";
-import { ComponentLayouts, ComponentLayout } from "./types";
 import { News } from "../News/News";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { ComponentType } from "../../models/models";
+import { ContainersStore } from "../../store/containersStore";
+import { observer } from "mobx-react-lite";
+import { ComponentLayout, ComponentLayouts } from "./types";
+import { Portfolio } from "../Portfolio/Portfolio";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 interface DragFromOutsideLayoutProps {
-  layouts: ComponentLayouts;
+  containersStore: ContainersStore;
 }
 
-const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
+const DragFromOutsideLayout = observer((props: DragFromOutsideLayoutProps) => {
+  const layouts: ComponentLayouts = {
+    lg: props.containersStore.containers,
+  };
+
   const defaultProps = {
     className: "layout",
     rowHeight: 30,
     onLayoutChange: function () {},
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
   };
-
-  const addContainer = useStoreActions(
-    (state) => state.containers.addContainer
-  );
-
-  const setLayouts = useStoreActions((state) => state.containers.setContainers);
-
-  const saveLayouts = useStoreActions(
-    (state) => state.containers.saveContainerState
-  );
-
-  const updateLayout = useStoreActions(
-    (state) => state.containers.updateContainers
-  );
-
-  const deleteLayout = useStoreActions(
-    (state) => state.containers.deleteContainer
-  );
 
   const [currentBreakpoint, setCurrentBreakpoint] = useState("lg");
   const [compactType, setCompactType] = useState<string | null>(null);
@@ -61,7 +49,6 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
     // if (layouts.length > 0 && !isInitialLoad) {
     //   const layoutIds = layouts.map((l) => l.i);
     //   const localLayouts = _.clone(props.layouts);
-
     //   layouts.forEach((layout) => {
     //     const idx = layoutIds.indexOf(layout.i);
     //     if (idx !== -1) {
@@ -79,19 +66,17 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
       layout: layoutItem,
       componentType: ComponentType.Weather,
     };
-    addContainer(newContainer);
+    props.containersStore.addContainer(newContainer);
 
-    saveLayouts(newContainer);
+    props.containersStore.saveContainer(newContainer);
   };
 
   const onRemoveItem = (i: any) => {
-    deleteLayout(i);
-    setLayouts(_.reject(props.layouts.lg, (l) => l.layout.i == i));
+    props.containersStore.deleteContainer(i);
   };
 
   const generateDOM = () => {
-    return _.map(props.layouts.lg, (l) => {
-      console.log(l);
+    return _.map(layouts.lg, (l) => {
       return (
         <div
           key={l.layout.i}
@@ -103,6 +88,7 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
           </button>
           {l.componentType == ComponentType.Weather && <Weather></Weather>}
           {l.componentType == ComponentType.News && <News></News>}
+          {l.componentType == ComponentType.Portfolio && <Portfolio></Portfolio>}
         </div>
       );
     });
@@ -128,6 +114,6 @@ const DragFromOutsideLayout = (props: DragFromOutsideLayoutProps) => {
       </ResponsiveReactGridLayout>
     </div>
   );
-};
+});
 
 export default DragFromOutsideLayout;
