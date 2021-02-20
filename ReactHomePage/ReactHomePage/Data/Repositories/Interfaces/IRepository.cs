@@ -17,6 +17,7 @@ namespace ReactHomePage.Repositories.Interfaces
         public IQueryable<T> FindAll();
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression);
         public void Update(T entity);
+        public void UpdateRange(IEnumerable<T> entities);
         public Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match);
 
 #pragma warning disable CS0693 // Type parameter has the same name as the type parameter from outer type

@@ -72,7 +72,7 @@ namespace ReactHomePage
                 client.BaseAddress = new Uri("https://newsapi.org/v2/");
             });
 
-            services.AddSwaggerDocument(configure => configure.Title = "Home page API");
+            services.AddSwaggerDocument(configure => configure.Title = "Home page API");            
 
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 

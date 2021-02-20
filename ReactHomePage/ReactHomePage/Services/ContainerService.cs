@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using ReactHomePage.Models;
+using ReactHomePage.Entities.Models;
 using ReactHomePage.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -23,15 +23,15 @@ namespace ReactHomePage.Services.Container
         public async Task<bool> SaveContainers(IEnumerable<BaseContainer> containers)
         {
             _repo.Containers.CreateRange(containers);
-            await _repo.SaveAsync();
-            return true;
+            var res = await _repo.SaveAsync();
+            return res;
         }
 
         public async Task<bool> SaveContainer(BaseContainer container)
         {
             _repo.Containers.Create(container);
-            await _repo.SaveAsync();
-            return true;
+            var res = await _repo.SaveAsync();
+            return res;
         }
 
         public async Task<bool> DeleteContainerByLayoutId(string i)
@@ -40,20 +40,20 @@ namespace ReactHomePage.Services.Container
             if(container != null)
             {
                 _repo.Containers.Delete(container);
-                await _repo.SaveAsync(); 
+                var res = await _repo.SaveAsync();
+                return res;
             }
-            
+
             return false;
         }
 
-        public async Task<bool> UpdateContainer(IEnumerable<BaseContainer> containers)
+        public async Task<bool> UpdateContainers(IEnumerable<BaseContainer> containers, int userId)
         {
             foreach (var container in containers)
             {
-                _repo.Containers.Update(container);
+                _repo.Layouts.Update(container.Layout);
             }
-            await _repo.SaveAsync();
-            return true;
+            return await _repo.SaveAsync();
         }
 
         public IEnumerable<BaseContainer> GetUserContainers(int userId)

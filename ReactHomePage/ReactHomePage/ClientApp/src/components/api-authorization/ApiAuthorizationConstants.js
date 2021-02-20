@@ -16,7 +16,7 @@ export const LoginActions = {
   LoginCallback: 'login-callback',
   LoginFailed: 'login-failed',
   Profile: 'profile',
-  Register: 'register'
+  Register: 'register',
 };
 
 const prefix = '/authentication';
@@ -34,5 +34,5 @@ export const ApplicationPaths = {
   LoggedOut: `${prefix}/${LogoutActions.LoggedOut}`,
   LogOutCallback: `${prefix}/${LogoutActions.LogoutCallback}`,
   IdentityRegisterPath: '/Identity/Account/Register',
-  IdentityManagePath: '/Identity/Account/Manage'
+  IdentityManagePath: '/Identity/Account/Manage',
 };

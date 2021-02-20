@@ -10,6 +10,7 @@ using ReactHomePage.Models;
 namespace ReactHomePage.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class WeatherController : ControllerBase
     {

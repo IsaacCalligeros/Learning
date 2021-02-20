@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ReactHomePage.Entities.Models;
 using ReactHomePage.Models;
 using System.Linq;
 
@@ -9,6 +10,8 @@ namespace ReactHomePage.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<News, News>();
+            CreateMap<Layout, Layout>();
+            CreateMap<BaseContainer, BaseContainer>();
         }
     }
 }

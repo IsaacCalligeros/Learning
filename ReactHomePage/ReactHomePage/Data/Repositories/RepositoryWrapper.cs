@@ -23,6 +23,7 @@ namespace ReactHomePage.Data.Repositories
         private IEquityRepository _equity;
         private IContainerRepository _container;
         private IPortfolioRepository _portfolio;
+        private ILayoutRepository _layout;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -81,6 +82,19 @@ namespace ReactHomePage.Data.Repositories
                 }
 
                 return _container;
+            }
+        }
+
+        public ILayoutRepository Layouts
+        {
+            get
+            {
+                if (_layout == null)
+                {
+                    _layout = new LayoutRepository(_dataContext);
+                }
+
+                return _layout;
             }
         }
 

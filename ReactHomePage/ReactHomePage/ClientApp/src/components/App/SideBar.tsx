@@ -61,7 +61,6 @@ const SideBar = (props: sideBarProps) => {
       },
       componentType: componentType,
     };
-
     const res = props.containersStore.saveContainer(newContainer);
   };
 

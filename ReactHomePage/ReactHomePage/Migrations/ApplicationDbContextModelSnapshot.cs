@@ -206,6 +206,51 @@ namespace ReactHomePage.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("ReactHomePage.Entities.Models.BaseContainer", b =>
+                {
+                    b.Property<int>("ContainerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("ComponentType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("LayoutId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ContainerId");
+
+                    b.HasIndex("LayoutId");
+
+                    b.ToTable("Containers");
+                });
+
+            modelBuilder.Entity("ReactHomePage.Entities.Models.Layout", b =>
+                {
+                    b.Property<string>("I")
+                        .HasColumnType("text");
+
+                    b.Property<int>("H")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("W")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("X")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Y")
+                        .HasColumnType("integer");
+
+                    b.HasKey("I");
+
+                    b.ToTable("Layouts");
+                });
+
             modelBuilder.Entity("ReactHomePage.Entities.Models.Portfolio", b =>
                 {
                     b.Property<int>("Id")
@@ -213,8 +258,8 @@ namespace ReactHomePage.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -315,29 +360,6 @@ namespace ReactHomePage.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("ReactHomePage.Models.BaseContainer", b =>
-                {
-                    b.Property<int>("ContainerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("ComponentType")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("LayoutI")
-                        .HasColumnType("text");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ContainerId");
-
-                    b.HasIndex("LayoutI");
-
-                    b.ToTable("Containers");
-                });
-
             modelBuilder.Entity("ReactHomePage.Models.Equity", b =>
                 {
                     b.Property<int>("Id")
@@ -345,8 +367,14 @@ namespace ReactHomePage.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("PortfolioId")
+                    b.Property<float>("NumberHeld")
+                        .HasColumnType("real");
+
+                    b.Property<int>("PortfolioId")
                         .HasColumnType("integer");
+
+                    b.Property<float>("PurchasePrice")
+                        .HasColumnType("real");
 
                     b.Property<string>("Ticker")
                         .HasColumnType("text");
@@ -359,31 +387,6 @@ namespace ReactHomePage.Migrations
                     b.HasIndex("PortfolioId");
 
                     b.ToTable("Equities");
-                });
-
-            modelBuilder.Entity("ReactHomePage.Models.Layout", b =>
-                {
-                    b.Property<string>("I")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ContainerId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("H")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("W")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("X")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Y")
-                        .HasColumnType("integer");
-
-                    b.HasKey("I");
-
-                    b.ToTable("Layout");
                 });
 
             modelBuilder.Entity("ReactHomePage.Models.News", b =>
@@ -473,18 +476,20 @@ namespace ReactHomePage.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ReactHomePage.Models.BaseContainer", b =>
+            modelBuilder.Entity("ReactHomePage.Entities.Models.BaseContainer", b =>
                 {
-                    b.HasOne("ReactHomePage.Models.Layout", "Layout")
+                    b.HasOne("ReactHomePage.Entities.Models.Layout", "Layout")
                         .WithMany()
-                        .HasForeignKey("LayoutI");
+                        .HasForeignKey("LayoutId");
                 });
 
             modelBuilder.Entity("ReactHomePage.Models.Equity", b =>
                 {
-                    b.HasOne("ReactHomePage.Entities.Models.Portfolio", "Portfolio")
+                    b.HasOne("ReactHomePage.Entities.Models.Portfolio", null)
                         .WithMany("Equities")
-                        .HasForeignKey("PortfolioId");
+                        .HasForeignKey("PortfolioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

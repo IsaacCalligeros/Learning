@@ -10,10 +10,10 @@ namespace ReactHomePage.Services.Interfaces
 {
     public interface IEquityService
     {
-        public Task<bool> AddEquity(int portfolioId, int userId, Equity equity);
+        public Task<bool> AddEquity(int userId, Equity equity);
 
-        public Task<bool> DeleteEquity(int portfolioId, int equityId, int userId);
+        public Task<bool> DeleteEquity(int equityId, int userId);
 
-        public List<ASXCompanies> GetASXCompanies(string searchTerm);
+        public List<Company> GetASXCompanies(string searchTerm);
     }
 }

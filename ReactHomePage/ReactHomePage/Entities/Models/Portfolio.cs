@@ -11,9 +11,11 @@ namespace ReactHomePage.Entities.Models
     {
         public int Id { get; set; }
 
-        [ForeignKey("ApplicationUserId")]
         public int UserId { get; set; }
+        
+        //protected hides from nswag i.e. wanting to keep it server side only
+        protected ApplicationUser User { get; set; }
 
-        public ICollection<Equity> Equities { get; set; }
+        public virtual ICollection<Equity> Equities { get; set; }
     }
 }

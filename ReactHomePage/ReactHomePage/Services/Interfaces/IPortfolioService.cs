@@ -10,6 +10,8 @@ namespace ReactHomePage.Services.Interfaces
     public interface IPortfolioService
     {
         public Portfolio GetPortfolio(int userId);
+        public Portfolio FindOrCreate(int userId);
+        public Portfolio GetPortfolioById(int Id);
         public bool CreatePortfolio(Portfolio portfolio);
         public bool DeletePortfolio(int portfolioId);
     }

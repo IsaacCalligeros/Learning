@@ -24,6 +24,7 @@ namespace ReactHomePage.Data
         public DbSet<News> News { get; set; }
         public DbSet<BaseContainer> Containers { get; set; }
         public DbSet<Portfolio> Portfolios { get; set; }
+        public DbSet<Layout> Layouts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,12 +34,12 @@ namespace ReactHomePage.Data
             modelBuilder.Entity<AppRole>(entity => { entity.ToTable(name: "Role"); });
             
             modelBuilder.Entity<Portfolio>()
-            .HasMany(e => e.Equities);
-            
-            //modelBuilder.Entity<BaseContainer>()
-            //    .HasKey(x => new { x.ContainerId, x.Layout });
-            //modelBuilder.Entity<BaseContainer>()
-            //    .HasOne(p => p.Layout);
+                .HasMany(e => e.Equities);
+
+            modelBuilder.Entity<BaseContainer>()
+                .HasOne(b => b.Layout);
+
+            modelBuilder.Entity<Layout>();
         }
     }
 }

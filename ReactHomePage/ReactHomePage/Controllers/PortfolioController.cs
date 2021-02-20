@@ -13,12 +13,14 @@ using ReactHomePage.Dtos.News;
 using ReactHomePage.Entities.Models;
 using ReactHomePage.Helpers;
 using ReactHomePage.Models;
+using ReactHomePage.Models.APIModels;
 using ReactHomePage.Services.Container;
 using ReactHomePage.Services.Interfaces;
 
 namespace ReactHomePage.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class PortfolioController : ControllerBase
     {
@@ -29,12 +31,13 @@ namespace ReactHomePage.Controllers
             _portfolioService = portfolioService;
         }
 
-        [HttpGet]
-        [Route("GetPortfolio")]
-        public Portfolio GetPortfolio()
+        [HttpPut]
+        [Route("FindOrCreate")]
+        public PortfolioModel FindOrCreate()
         {
             var user = User.GetUserDetails();
-            return _portfolioService.GetPortfolio(user.UserId);
+            var portfolio = _portfolioService.FindOrCreate(user.UserId);
+            return new PortfolioModel(portfolio);
         }
 
         [HttpPost]
@@ -45,15 +48,20 @@ namespace ReactHomePage.Controllers
             portfolio.UserId = user.UserId;
 
             var addRes = _portfolioService.CreatePortfolio(portfolio);
-            return Ok(addRes);
+            var dbPortfolio = _portfolioService.GetPortfolio(user.UserId);
+            return Ok(new PortfolioModel(dbPortfolio));
         }
 
         [HttpDelete]
-        [Route("AddPortfolio")]
+        [Route("DeletePortfolio")]
         public ActionResult DeletePortfolio(int portfolioId)
         {
             var user = User.GetUserDetails();
-            var dbModel = _portfolioService.GetPortfolio(user.UserId);
+            var dbModel = _portfolioService.GetPortfolioById(portfolioId);
+            if (dbModel.UserId != user.UserId)
+            {
+                return BadRequest("This Aint yours");
+            }
             var delRes = _portfolioService.DeletePortfolio(portfolioId);
             return Ok(delRes);
         }

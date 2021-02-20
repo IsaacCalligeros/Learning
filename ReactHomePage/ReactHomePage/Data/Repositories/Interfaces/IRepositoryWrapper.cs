@@ -13,6 +13,7 @@ namespace ReactHomePage.Repositories.Interfaces
         IEquityRepository Equities { get; }
         IContainerRepository Containers { get; }
         IPortfolioRepository Portfolios { get; }
+        ILayoutRepository Layouts { get; }
 
         Task<bool> SaveAsync(string savingEntity);
         Task<bool> SaveAsync();

@@ -60,6 +60,11 @@ namespace ReactHomePage.Data.Repositories
             DataContext.Set<T>().Update(entity);
         }
 
+        public void UpdateRange(IEnumerable<T> entities)
+        {
+            DataContext.Set<T>().UpdateRange(entities);
+        }
+
         public void Delete(T entity)
         {
             DataContext.Set<T>().Remove(entity);

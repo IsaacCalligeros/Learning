@@ -11,13 +11,23 @@
   overflow: hidden;
   overflow-y: auto;
   position: relative;
+  
+
+.container-controls {
+  position: absolute;
+  right: 0;
+  display: flex;
+  z-index: 5;
 
   .remove {
-    position: absolute;
-    right: 0;
     margin: 0.2em;
     background-color: red;
   }
+  .drag-handle {
+    margin: 0.2em;
+    background-color: gray;
+  }
+}
 }
 
 .react-grid-layout {

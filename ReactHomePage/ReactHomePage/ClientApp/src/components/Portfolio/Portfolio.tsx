@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Portfolio } from "../../models/models";
+import { PortfolioService } from "../../services/PortfolioService";
 import { EquityList } from "../Equities/list";
+import { PortfolioStore } from "./portfolioStore";
 
-const Portfolio = () => {
+const PortfolioComponent = () => {
+  const portfolioService = new PortfolioService();
+  const [Portfolio, SetPortfolio] = useState<null | Portfolio>(null);
+
+    const portfolioStore = new PortfolioStore();
+
   return (
-    <EquityList></EquityList>
+    <EquityList
+    store={portfolioStore}></EquityList>
   );
 };
 
-export { Portfolio };
+export { PortfolioComponent };

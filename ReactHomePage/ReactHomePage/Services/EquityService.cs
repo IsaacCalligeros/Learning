@@ -8,6 +8,7 @@ using ReactHomePage.Repositories.Interfaces;
 using ReactHomePage.Services.Interfaces;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -25,9 +26,9 @@ namespace ReactHomePage.Services.Container
         }
 
 
-        public async Task<bool> AddEquity(int portfolioId, int userId, Equity equity)
+        public async Task<bool> AddEquity(int userId, Equity equity)
         {
-            var portfolio = _repo.Portfolios.FindById<Portfolio>(portfolioId);
+            var portfolio = _repo.Portfolios.FindById<Portfolio>(equity.PortfolioId);
             if (portfolio.UserId != userId)
             {
                 return false;
@@ -38,9 +39,10 @@ namespace ReactHomePage.Services.Container
             return res;
         }
 
-        public async Task<bool> DeleteEquity(int portfolioId, int equityId, int userId)
+        public async Task<bool> DeleteEquity(int equityId, int userId)
         {
-            var portfolio = _repo.Portfolios.FindById<Portfolio>(portfolioId);
+            var equity = _repo.Equities.FindById<Equity>(equityId);
+            var portfolio = _repo.Portfolios.FindById<Portfolio>(equity.PortfolioId);
             if (portfolio.UserId != userId)
             {
                 return false;
@@ -51,24 +53,24 @@ namespace ReactHomePage.Services.Container
             return res;
         }
 
-        public List<ASXCompanies> GetASXCompanies(string searchTerm)
+        public List<Company> GetASXCompanies(string searchTerm)
         {
             var resourceName = "ReactHomePage.Resources.companies-asx.json";
             var assembly = Assembly.GetExecutingAssembly();
-            List<ASXCompanies> companies = new List<ASXCompanies>();
+            List<Company> companies = new List<Company>();
 
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             using (StreamReader reader = new StreamReader(stream))
             {
                 string result = reader.ReadToEnd();
-                companies = JsonConvert.DeserializeObject<List<ASXCompanies>>(result);
+                companies = JsonConvert.DeserializeObject<List<Company>>(result);
             }
             if (searchTerm != null)
             {
-                companies = SearchHelper.ContainsSearch<ASXCompanies>(companies, searchTerm);
+                companies = SearchHelper.ContainsSearch<Company>(companies, searchTerm);
             }
 
-            return companies;            
+            return companies.Take(10).ToList();            
         }
     }
 }

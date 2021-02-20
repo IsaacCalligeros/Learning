@@ -1,4 +1,4 @@
-﻿using ReactHomePage.Models;
+﻿using ReactHomePage.Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

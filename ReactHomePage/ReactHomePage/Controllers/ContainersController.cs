@@ -1,22 +1,17 @@
-using System;
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using ReactHomePage.Dtos.News;
+using ReactHomePage.Entities.Models;
 using ReactHomePage.Helpers;
-using ReactHomePage.Models;
 using ReactHomePage.Services.Container;
 
 namespace ReactHomePage.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class ContainersController : ControllerBase
     {
@@ -42,6 +37,10 @@ namespace ReactHomePage.Controllers
         public async Task<bool> SaveContainer(BaseContainer container)
         {
             var user = User.GetUserDetails();
+            if(container.LayoutId == null)
+            {
+                container.LayoutId = container.Layout.I;
+            }
             container.UserId = user.UserId;
             var containersSaved = await _containersService.SaveContainer(container);
             return containersSaved;
@@ -62,18 +61,8 @@ namespace ReactHomePage.Controllers
         public async Task<bool> updateContainers(List<BaseContainer> containers)
         {
             var user = User.GetUserDetails();
-            containers.ForEach(c => c.UserId = user.UserId);
 
-            var layoutIds = containers.Select(l => l.Layout.I);
-            var dbContainers = _containersService.GetUserContainers(user.UserId).ToList();
-            if (dbContainers.Count() == 0)
-            {
-                return false;
-            }
-
-            dbContainers.ForEach(dbc => dbc.Layout = containers.Where(c => c.Layout.I == dbc.Layout.I).FirstOrDefault()?.Layout);
-
-            var containersSaved = await _containersService.UpdateContainer(containers);
+            var containersSaved = await _containersService.UpdateContainers(containers, user.UserId);
 
             return containersSaved;
         }

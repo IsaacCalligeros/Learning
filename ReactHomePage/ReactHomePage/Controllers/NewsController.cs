@@ -11,6 +11,7 @@ using ReactHomePage.Helpers;
 
 namespace ReactHomePage.Controllers {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class NewsController : ControllerBase {
         private IConfiguration configuration;

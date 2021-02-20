@@ -1,5 +1,4 @@
 ﻿using ReactHomePage.Data;
-using ReactHomePage.Models;
 using ReactHomePage.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
-
+using ReactHomePage.Entities.Models;
 
 namespace ReactHomePage.Data.Repositories
 {

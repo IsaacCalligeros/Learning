@@ -7,7 +7,7 @@ import "../../CSS/news.scss";
 
 const News = () => {
   const [loading, setLoading] = useState(true);
-  const [news, setNews] = useState<NewsDto>(new NewsDto());
+  const [news, setNews] = useState<NewsDto | null>(null);
   const [searchTerm, setSearchTerm] = useState("news");
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -49,7 +49,7 @@ const News = () => {
           </tr>
         </thead>
         <tbody>
-          {news.articles?.map((article, idx) => (
+          {news?.articles?.map((article, idx) => (
             <tr key={idx}>
               <td>{article.title}</td>
               <td>

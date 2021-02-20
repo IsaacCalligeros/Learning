@@ -12,8 +12,12 @@ namespace ReactHomePage.Models
         public int Id { get; set; }
         public string Ticker { get; set; }
         public EquityType Type { get; set; }
+        public float NumberHeld { get; set; }
+        public float PurchasePrice { get; set; }
+
+        public int PortfolioId { get; set; }
 
         [ForeignKey("PortfolioId")]
-        public Portfolio Portfolio { get; set; }
+        protected Portfolio Portfolio { get; set; }
     }
 }
